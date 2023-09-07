@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Petrol Pump1.props" />
+</Project>
