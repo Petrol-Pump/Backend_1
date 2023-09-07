@@ -27,11 +27,13 @@ namespace Petrol_Pump1.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<User>> Register(UserDto userDto)
         {
-            createPasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            createPasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt, userDto.Role);
 
             user.PasswordSalt = passwordSalt;
             user.PasswordHarsh = passwordHash;  
             user.UserName = userDto.UserName;
+            user.Role = userDto.Role;
+
             return Ok(user);
 
 
@@ -63,6 +65,9 @@ namespace Petrol_Pump1.Controllers
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Role, user.Role),
+               /* new Claim(ClaimTypes.Role,"Employee"),
+                new Claim(ClaimTypes.Role, "Contractor")*/
             };
 
 
@@ -80,12 +85,13 @@ namespace Petrol_Pump1.Controllers
             return jwt;
 
         }
-        private void createPasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        private void createPasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt, string role)
         {
             using (var hmac = new HMACSHA512())
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+
 
 
 

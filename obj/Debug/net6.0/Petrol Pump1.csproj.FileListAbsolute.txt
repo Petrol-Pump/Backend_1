@@ -293,3 +293,7 @@ C:\Users\vmuser\source\repos\Petrol Pump1\bin\Debug\net6.0\Microsoft.Owin.Securi
 C:\Users\vmuser\source\repos\Petrol Pump1\bin\Debug\net6.0\Microsoft.Owin.Security.Jwt.dll
 C:\Users\vmuser\source\repos\Petrol Pump1\bin\Debug\net6.0\Microsoft.Owin.Security.OAuth.dll
 C:\Users\vmuser\source\repos\Petrol Pump1\bin\Debug\net6.0\Owin.dll
+C:\Users\vmuser\source\repos\Petrol Pump1\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\vmuser\source\repos\Petrol Pump1\bin\Debug\net6.0\Scrutor.dll
+C:\Users\vmuser\source\repos\Petrol Pump1\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
+C:\Users\vmuser\source\repos\Petrol Pump1\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.Abstractions.dll
