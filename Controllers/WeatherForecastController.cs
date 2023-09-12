@@ -5,7 +5,7 @@ namespace Petrol_Pump1.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Roles = "Admin,Employee")]
+    [Authorize(Roles = "Employee")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

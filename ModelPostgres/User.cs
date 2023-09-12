@@ -1,9 +1,12 @@
-﻿namespace Petrol_Pump1.ModelPostgres
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Petrol_Pump1.ModelPostgres
 {
     public class User
     {
-        public decimal UserId { get; set; }
-        public string UserName { get; set; } = string.Empty;
+        [Key]
+        public int UserId { get; set; }
+        public string UserName { get; set; }
 
         public string Role { get; set; }
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Petrol_Pump1.ModelPostgres;
@@ -11,9 +12,11 @@ using Petrol_Pump1.ModelPostgres;
 namespace Petrol_Pump1.Migrations
 {
     [DbContext(typeof(FdwmrdjxContext))]
-    partial class FdwmrdjxContextModelSnapshot : ModelSnapshot
+    [Migration("20230912094816_next")]
+    partial class next
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Petrol_Pump1.ModelPostgres;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,29 +13,74 @@ namespace Petrol_Pump1.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public static User user = new User();
+
+        private readonly FdwmrdjxContext _context;
+
+        public User user = new User();
         private readonly IConfiguration _configuration;
 
 
-        public AuthController(IConfiguration configuration) 
+        public AuthController(IConfiguration configuration, FdwmrdjxContext context)
         {
             _configuration = configuration;
+            _context = context;
 
 
         }
-       
 
-        [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(UserDto userDto)
+        [Route("registration")]
+        [HttpPost()]
+        public async Task<ActionResult<User>> Register( UserDto userDto)
         {
+           /* var user1 = new User()
+            {
+                UserName = " ",
+                Role = " ",
+                PasswordHarsh = null,
+                PasswordSalt = null
+            };*/
             createPasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt, userDto.Role);
 
-            user.PasswordSalt = passwordSalt;
-            user.PasswordHarsh = passwordHash;  
-            user.UserName = userDto.UserName;
-            user.Role = userDto.Role;
 
-            return Ok(user);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            var user1 = new User
+            {
+                UserName = userDto.UserName,
+                Role = userDto.Role,
+                PasswordHarsh = passwordHash,
+                PasswordSalt = passwordSalt
+
+            };
+
+            Console.WriteLine(user.UserName);
+            Console.WriteLine(user.PasswordHarsh);
+            _context.Users.Add(user1);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+            }
+            catch(DbUpdateException)
+            {
+                return Conflict();
+            }
+
+
+            return Ok(user1);
 
 
         }
@@ -43,13 +89,13 @@ namespace Petrol_Pump1.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserDto userDto)
         {
-            if(user.UserName != userDto.UserName)
+            if (user.UserName != userDto.UserName)
             {
                 return BadRequest("User Not Found");
 
             }
 
-            if(!VerifyPasswordHash(userDto.Password,user.PasswordHarsh,user.PasswordSalt))
+            if (!VerifyPasswordHash(userDto.Password, user.PasswordHarsh, user.PasswordSalt))
             {
                 return BadRequest("Wrong Password");
             }
@@ -91,6 +137,8 @@ namespace Petrol_Pump1.Controllers
             {
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+
+                
 
 
 
