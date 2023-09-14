@@ -16,7 +16,7 @@ namespace Petrol_Pump1.Controllers
 
         private readonly FdwmrdjxContext _context;
 
-        public User user = new User();
+        public static User user = new User();
         private readonly IConfiguration _configuration;
 
 
@@ -42,7 +42,10 @@ namespace Petrol_Pump1.Controllers
             createPasswordHash(userDto.Password, out byte[] passwordHash, out byte[] passwordSalt, userDto.Role);
 
 
-
+            /*  user.PasswordSalt = passwordSalt;
+              user.PasswordHarsh = passwordHash;
+              user.UserName = userDto.UserName;
+              user.Role = userDto.Role;*/
 
 
 
@@ -74,7 +77,7 @@ namespace Petrol_Pump1.Controllers
                 await _context.SaveChangesAsync();
 
             }
-            catch(DbUpdateException)
+            catch (DbUpdateException)
             {
                 return Conflict();
             }
@@ -86,9 +89,15 @@ namespace Petrol_Pump1.Controllers
         }
 
 
-        [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(UserDto userDto)
+        [HttpPost("{id}")]
+        public async Task<ActionResult<string>> Login(UserDto userDto, int id)
         {
+            if (_context.Users == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.Users.FindAsync(id);
+
             if (user.UserName != userDto.UserName)
             {
                 return BadRequest("User Not Found");
