@@ -28,6 +28,16 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
+builder.Services.AddCors(x => {
+    x.AddPolicy("pol", pol =>
+    {
+        pol.AllowAnyOrigin();
+        pol.AllowAnyMethod();
+        pol.AllowAnyHeader();
+       
+    });
+});
+
 builder.Services.AddDbContext<FdwmrdjxContext>(options => options.UseNpgsql("Host=berry.db.elephantsql.com;Database=fdwmrdjx;Username=fdwmrdjx;Password=wPJzR6k6ZYtJJG5gIU4oQztRpjmCQKDr"));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -62,6 +72,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 
+/*app.UseCors("pol");*/
 app.UseAuthorization();
 
 app.MapControllers();

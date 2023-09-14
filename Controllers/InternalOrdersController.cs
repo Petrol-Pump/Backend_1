@@ -109,6 +109,8 @@ namespace Petrol_Pump1.Controllers
             return CreatedAtAction("GetInternalOrder", new { id = internalOrder.IntOrderid }, internalOrder);
         }
 
+       
+
         // DELETE: api/InternalOrders/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteInternalOrder(decimal id)

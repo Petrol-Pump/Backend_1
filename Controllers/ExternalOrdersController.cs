@@ -13,7 +13,7 @@ namespace Petrol_Pump1.Controllers
     [ApiController]
     public class ExternalOrdersController : ControllerBase
     {
-        private readonly FdwmrdjxContext _context;
+        private  FdwmrdjxContext _context;
 
         public ExternalOrdersController(FdwmrdjxContext context)
         {
@@ -89,6 +89,41 @@ namespace Petrol_Pump1.Controllers
           {
               return Problem("Entity set 'FdwmrdjxContext.ExternalOrders'  is null.");
           }
+
+
+            var units = externalOrder.UnitsBought;
+
+            var productid = externalOrder.ProductBought;
+
+            var product = await _context.Products.FindAsync(productid);
+            var units_stock = product.UnitsInStock;
+            units_stock = (decimal)(units_stock - (units));
+            Random random = new Random();
+
+            if (units_stock < product.ThresholdUnits)
+            {
+                var internalorder = new InternalOrder
+                {
+                    IntOrderid = (decimal)random.NextDouble(),
+                    SuppliedBy = product.SuppliedBy,
+                    ProductBought = product.ProductId,
+                    UnitsBought = product.ThresholdUnits * 5,
+                    TotalPayable = units * product.PricePerUnit,
+                    OrderConfirmed = false,
+                    ProductDelivered = false,
+                    OrderDispatched = false,
+                    DateOrdered = DateOnly.FromDateTime(new DateTime())
+
+
+                };
+
+
+                var internalOrderControl = new InternalOrdersController(_context);
+                await internalOrderControl.PostInternalOrder(internalorder);
+
+
+            }
+
             _context.ExternalOrders.Add(externalOrder);
             try
             {
@@ -106,8 +141,38 @@ namespace Petrol_Pump1.Controllers
                 }
             }
 
+
             return CreatedAtAction("GetExternalOrder", new { id = externalOrder.ExtOrderid }, externalOrder);
         }
+
+       /* [HttpPost("{id}")]
+        public async Task<ActionResult<ExternalOrder>> checkExternalOrder(ExternalOrder externalOrder)
+        {
+            if (_context.ExternalOrders == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                
+                if (ExternalOrder == null)
+                {
+                    return NotFound();
+                }
+
+                
+
+                    
+
+                    
+
+
+               
+
+                return Ok();
+
+            }
+        }*/
 
         // DELETE: api/ExternalOrders/5
         [HttpDelete("{id}")]

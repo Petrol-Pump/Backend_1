@@ -26,4 +26,9 @@ public partial class InternalOrder
     public virtual Product? ProductBoughtNavigation { get; set; }
 
     public virtual Contractor? SuppliedByNavigation { get; set; }
+
+   /* public static implicit operator InternalOrder(InternalOrder v)
+    {
+        throw new NotImplementedException();
+    }*/
 }
