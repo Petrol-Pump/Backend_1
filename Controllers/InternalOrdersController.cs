@@ -24,10 +24,10 @@ namespace Petrol_Pump1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<InternalOrder>>> GetInternalOrders()
         {
-          if (_context.InternalOrders == null)
-          {
-              return NotFound();
-          }
+            if (_context.InternalOrders == null)
+            {
+                return NotFound();
+            }
             return await _context.InternalOrders.ToListAsync();
         }
 
@@ -35,10 +35,10 @@ namespace Petrol_Pump1.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<InternalOrder>> GetInternalOrder(decimal id)
         {
-          if (_context.InternalOrders == null)
-          {
-              return NotFound();
-          }
+            if (_context.InternalOrders == null)
+            {
+                return NotFound();
+            }
             var internalOrder = await _context.InternalOrders.FindAsync(id);
 
             if (internalOrder == null)
@@ -51,7 +51,8 @@ namespace Petrol_Pump1.Controllers
 
         // PUT: api/InternalOrders/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
+        //[Route("updateinfo")]
+        [HttpPut("{id}/updateinfo")]
         public async Task<IActionResult> PutInternalOrder(decimal id, InternalOrder internalOrder)
         {
             if (id != internalOrder.IntOrderid)
@@ -78,6 +79,89 @@ namespace Petrol_Pump1.Controllers
             }
 
             return NoContent();
+        }
+      
+        [HttpPut("{id}/update")]
+        //made by saurav
+
+        public async Task<IActionResult> updateOrderConfirmed(decimal id)
+        {
+            if (_context.InternalOrders == null)
+            {
+                return Problem("Entity set 'FdwmrdjxContext.InternalOrders'  is null.");
+            }
+
+            var internalOder = await _context.InternalOrders.FindAsync(id);
+            internalOder.OrderConfirmed = true;
+            try
+            {
+
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                throw;
+
+            }
+            return Ok();        
+
+
+
+        }
+
+        [HttpPut("{id}/updateproduct")]
+        //made by BTuncle
+
+        public async Task<IActionResult> updateProductDelivered(decimal id)
+        {
+            if (_context.InternalOrders == null)
+            {
+                return Problem("Entity set 'FdwmrdjxContext.InternalOrders'  is null.");
+            }
+
+            var internalOder = await _context.InternalOrders.FindAsync(id);
+            internalOder.ProductDelivered = true;
+            try
+            {
+
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                throw;
+
+            }
+            return Ok();
+
+        }
+
+        [HttpPut("{id}/updateorderdispatched")]
+        //made by BTuncle
+
+        public async Task<IActionResult> updateOrderDispatched(decimal id)
+        {
+            if (_context.InternalOrders == null)
+            {
+                return Problem("Entity set 'FdwmrdjxContext.InternalOrders'  is null.");
+            }
+
+            var internalOder = await _context.InternalOrders.FindAsync(id);
+            internalOder.OrderDispatched = true;
+            try
+            {
+
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+
+                throw;
+
+            }
+            return Ok();
+
         }
 
         // POST: api/InternalOrders

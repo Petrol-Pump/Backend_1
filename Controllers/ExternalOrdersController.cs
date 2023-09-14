@@ -104,7 +104,7 @@ namespace Petrol_Pump1.Controllers
             {
                 var internalorder = new InternalOrder
                 {
-                    IntOrderid = (decimal)random.NextDouble(),
+                    IntOrderid = (int)random.NextDouble(),
                     SuppliedBy = product.SuppliedBy,
                     ProductBought = product.ProductId,
                     UnitsBought = product.ThresholdUnits * 5,
